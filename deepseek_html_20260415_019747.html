@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Business Mastery | Aileen Palette Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        :root {
+            --bg: #F2E8DF;        /* Aileen-3 */
+            --card-bg: #ffffff;
+            --text: #1a2c3e;
+            --border: #d4cdc2;
+            --primary: #86A69D;    /* Aileen-1 */
+            --primary-dark: #6b8b82;
+            --primary-light: #e0ede8;
+            --accent: #F2B263;     /* Aileen-2 */
+            --accent-dark: #d99c4a;
+            --accent-light: #fef0e0;
+            --highlight: #F28585;   /* Aileen-5 */
+            --header-grad: linear-gradient(135deg, #86A69D, #6b8b82);
+            --shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        body.dark {
+            --bg: #2c3e3a;
+            --card-bg: #1e2f2a;
+            --text: #f0f3ef;
+            --border: #4a635c;
+            --primary: #86A69D;
+            --primary-dark: #6b8b82;
+            --primary-light: #2f4b43;
+            --accent: #F2B263;
+            --header-grad: linear-gradient(135deg, #3a5e55, #1f4037);
+            --shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+        .app-header {
+            background: var(--header-grad);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .score-area {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+        }
+        .theme-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .menu-group {
+            max-width: 1400px;
+            margin: 2rem auto 1rem;
+            padding: 0 1.5rem;
+        }
+        .group-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 1.5rem 0 1rem 0;
+            color: var(--primary-dark);
+            border-left: 6px solid var(--accent);
+            padding-left: 1rem;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .menu-card {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        .menu-card:hover { transform: translateY(-5px); background: var(--primary-light); }
+        .menu-card i { font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .menu-card h3 { font-size: 1.2rem; margin-bottom: 0.2rem; color: var(--primary-dark); }
+        .section-container {
+            display: none;
+            max-width: 1300px;
+            margin: 2rem auto;
+            background: var(--card-bg);
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .active-section { display: block; }
+        .back-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-btn:hover { background: var(--primary-dark); }
+        h2 { color: var(--primary-dark); margin-bottom: 1rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin: 1rem 0; }
+        .card-light {
+            background: var(--bg);
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            margin: 0.5rem 0;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        button:not(.back-btn):not(.theme-btn) {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        button:not(.back-btn):not(.theme-btn):hover { background: var(--accent-dark); }
+        .feedback { font-size: 0.85rem; margin-top: 0.5rem; font-weight: 500; color: var(--primary-dark); }
+        hr { margin: 1.5rem 0; border-color: var(--border); }
+        .rule-box {
+            background: var(--primary-light);
+            padding: 1rem;
+            border-radius: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--accent);
+        }
+        @media (max-width: 700px) {
+            .section-container { padding: 1rem; }
+        }
+        .badge-points {
+            background: var(--accent);
+            border-radius: 1rem;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="app-header">
+    <div class="logo"><i class="fas fa-graduation-cap"></i> Business English Complete</div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <div class="score-area"><i class="fas fa-star"></i> Score: <span id="totalScore">0</span></div>
+        <button id="darkModeToggle" class="theme-btn"><i class="fas fa-moon"></i> Dark</button>
+    </div>
+</div>
+
+<!-- MAIN MENU (unchanged structure, only colors updated) -->
+<div id="mainMenu">
+    <div class="menu-group">
+        <div class="group-title"><i class="fas fa-tasks"></i> 📋 Required Assignments 1–9 (Exam Tasks)</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-section="assign1"><i class="fas fa-glossary"></i><h3>1. Define Terms</h3><p>current assets, long-term liabilities, retained profit, dividends</p></div>
+            <div class="menu-card" data-section="assign2"><i class="fas fa-pen-fancy"></i><h3>2. Write Sentences</h3><p>wholesaler, double-edged sword, GPU</p></div>
+            <div class="menu-card" data-section="assign3"><i class="fas fa-hashtag"></i><h3>3. Tag Questions (basic)</h3><p>aren't I? have you? etc.</p></div>
+            <div class="menu-card" data-section="assign4"><i class="fas fa-exchange-alt"></i><h3>4. Word Swap</h3><p>10 sentences — replace the word</p></div>
+            <div class="menu-card" data-section="assign5"><i class="fas fa-file-alt"></i><h3>5. Fill in Text</h3><p>Eric White breakeven</p></div>
+            <div class="menu-card" data-section="assign6"><i class="fas fa-chart-pie"></i><h3>6. 4Ps / 4Cs Text</h3><p>complete marketing mix</p></div>
+            <div class="menu-card" data-section="assign7"><i class="fas fa-question-circle"></i><h3>7. More Tag Questions</h3><p>advanced practice</p></div>
+            <div class="menu-card" data-section="assign8"><i class="fas fa-rocket"></i><h3>8. Quick Revision</h3><p>mixed grammar & vocabulary</p></div>
+            <div class="menu-card" data-section="assign9"><i class="fas fa-handshake"></i><h3>9. Persuasion Gaps</h3><p>first letter given</p></div>
+        </div>
+    </div>
+    <div class="menu-group">
+        <div class="group-title"><i class="fas fa-chalkboard"></i> 📚 Business English Topics (File 5 – full glossary)</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-section="topic_def"><i class="fas fa-glossary"></i><h3>Defining Terms</h3><p>break even, COGS, overheads, margin, stock, etc.</p></div>
+            <div class="menu-card" data-section="topic_struct"><i class="fas fa-pen-fancy"></i><h3>Structuring Sentence</h3><p>key business collocations</p></div>
+            <div class="menu-card" data-section="topic_interrog"><i class="fas fa-question-circle"></i><h3>Interrogative Sentences</h3><p>negative questions for persuasion</p></div>
+            <div class="menu-card" data-section="topic_vocab"><i class="fas fa-book-open"></i><h3>Vocabulary Bank</h3><p>match 20+ terms from glossaries</p></div>
+            <div class="menu-card" data-section="topic_tag"><i class="fas fa-hashtag"></i><h3>Tag Questions (intensive)</h3><p>10+ exercises</p></div>
+            <div class="menu-card" data-section="topic_persuasion"><i class="fas fa-handshake"></i><h3>Patterns of Persuasion</h3><p>Feel, Felt, Found & redirects</p></div>
+            <div class="menu-card" data-section="topic_bargain"><i class="fas fa-comments-dollar"></i><h3>Bargaining & Objections</h3><p>real-life scenarios</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== ASSIGNMENTS 1-9 SECTIONS (same content, only colors changed) ========== -->
+<div id="assign1" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</button><h2>📖 Assignment 1: Define the following terms in English</h2><div id="assign1Terms" class="grid-2"></div></div>
+<div id="assign2" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>✍️ Assignment 2: Write one meaningful business sentence for each word</h2><div id="assign2Area"></div><button id="checkAssign2">Check sentences</button><div id="assign2Feedback" class="feedback"></div></div>
+<div id="assign3" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🏷️ Assignment 3: Add the correct question tag</h2><div id="assign3Area"></div><button id="checkAssign3">Check tags</button><div id="assign3Feedback" class="feedback"></div></div>
+<div id="assign4" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🔄 Assignment 4: Word swap (10 sentences)</h2><p>Choose the correct word from the bank.</p><div id="assign4Swap"></div><button id="checkAssign4">Check swap</button><div id="assign4Feedback" class="feedback"></div></div>
+<div id="assign5" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>📄 Assignment 5: Complete the text about Eric White (breakeven)</h2><div id="assign5Text"></div><button id="checkAssign5">Check text</button><div id="assign5Feedback" class="feedback"></div></div>
+<div id="assign6" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🎯 Assignment 6: Marketing Mix (4Ps and 4Cs) – complete the entire text</h2><div id="assign6Text"></div><button id="checkAssign6">Check 4Ps</button><div id="assign6Feedback" class="feedback"></div></div>
+<div id="assign7" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🏷️ Assignment 7: More tag questions (mixed tenses)</h2><div id="assign7Area"></div><button id="checkAssign7">Check tags</button><div id="assign7Feedback" class="feedback"></div></div>
+<div id="assign8" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>⚡ Assignment 8: Quick revision (mixed)</h2><p>Complete the tasks below. Click "Get bonus" after finishing.</p><div id="assign8Area"></div><button id="checkAssign8">Get bonus points</button><div id="assign8Feedback" class="feedback"></div></div>
+<div id="assign9" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🤝 Assignment 9: Persuasion expressions – fill in the blanks (first letter given)</h2><div id="assign9Gaps"></div><button id="checkAssign9">Check expressions</button><div id="assign9Feedback" class="feedback"></div></div>
+
+<!-- TOPIC SECTIONS (same content) -->
+<div id="topic_def" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>📖 Topic: Defining Terms (full glossary)</h2><div id="topicDefArea" class="grid-2"></div></div>
+<div id="topic_struct" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>✍️ Topic: Structuring sentences with key vocabulary</h2><div id="topicStructArea"></div><button id="checkTopicStruct">Check sentences</button><div id="topicStructFeedback" class="feedback"></div></div>
+<div id="topic_interrog" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>❓ Topic: Interrogative sentences (negative questions for persuasion)</h2><div class="rule-box">Negative questions imply agreement: <em>Don't you think we should invest? Wouldn't it be better to wait?</em></div><div id="topicInterrogArea" class="grid-2"></div><button id="checkTopicInterrog">Check</button><div id="topicInterrogFeedback" class="feedback"></div></div>
+<div id="topic_vocab" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>📚 Topic: Vocabulary Bank (match terms from file 5 glossaries)</h2><div id="topicVocabArea"></div><button id="checkTopicVocab">Check matching</button><div id="topicVocabFeedback" class="feedback"></div></div>
+<div id="topic_tag" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🏷️ Topic: Tag questions – intensive practice (12 exercises)</h2><div class="rule-box">Rule: Positive → negative tag, negative → positive tag, modals repeat, let's → shall we</div><div id="topicTagArea"></div><button id="checkTopicTag">Check all tags</button><div id="topicTagFeedback" class="feedback"></div></div>
+<div id="topic_persuasion" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🤝 Topic: Patterns of persuasion (Feel, Felt, Found & redirects)</h2><div id="topicPersuasionArea"></div><button id="checkTopicPersuasion">Check</button><div id="topicPersuasionFeedback" class="feedback"></div></div>
+<div id="topic_bargain" class="section-container"><button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button><h2>🎲 Topic: Bargaining & objection handling (real scenarios)</h2><div id="topicBargainArea"></div><button id="checkTopicBargain">Check answers</button><div id="topicBargainFeedback" class="feedback"></div></div>
+
+<script>
+    // ----- GLOBAL SCORE -----
+    let totalPoints = 0;
+    const scoreSpan = document.getElementById('totalScore');
+    function addPoints(amount, reason) {
+        totalPoints += amount;
+        scoreSpan.innerText = totalPoints;
+    }
+
+    // Dark mode toggle
+    const toggleDark = document.getElementById('darkModeToggle');
+    toggleDark.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        toggleDark.innerHTML = isDark ? '<i class="fas fa-sun"></i> Light' : '<i class="fas fa-moon"></i> Dark';
+    });
+
+    // Navigation
+    const allSections = document.querySelectorAll('.section-container');
+    const mainMenuDiv = document.getElementById('mainMenu');
+    function showSection(sectionId) {
+        allSections.forEach(sec => sec.classList.remove('active-section'));
+        document.getElementById(sectionId).classList.add('active-section');
+        mainMenuDiv.style.display = 'none';
+    }
+    function showMenu() {
+        allSections.forEach(sec => sec.classList.remove('active-section'));
+        mainMenuDiv.style.display = 'block';
+    }
+    document.querySelectorAll('.menu-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const secId = card.getAttribute('data-section');
+            if (secId) showSection(secId);
+        });
+    });
+    document.querySelectorAll('.back-btn').forEach(btn => btn.addEventListener('click', showMenu));
+    showMenu();
+
+    // ---------- ASSIGNMENT 1 (definitions) ----------
+    const assign1Terms = [
+        { term: "Current assets", hint: "cash or assets convertible within one year (e.g., inventory, receivables)" },
+        { term: "Long-term liabilities", hint: "debts due after more than one year (e.g., bank loans, mortgages)" },
+        { term: "Retained profit", hint: "net income kept in the business for reinvestment, not paid as dividends" },
+        { term: "Dividends", hint: "payments made to shareholders from company profits" }
+    ];
+    const a1Container = document.getElementById('assign1Terms');
+    assign1Terms.forEach((item, idx) => {
+        const div = document.createElement('div'); div.className = 'card-light';
+        div.innerHTML = `<strong>${item.term}</strong><br><textarea id="a1def${idx}" rows="3" placeholder="Write definition in English..."></textarea><button class="a1check" data-idx="${idx}">Check</button><div id="a1feed${idx}" class="feedback"></div>`;
+        a1Container.appendChild(div);
+    });
+    document.querySelectorAll('.a1check').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = parseInt(btn.getAttribute('data-idx'));
+            const user = document.getElementById(`a1def${idx}`).value.toLowerCase();
+            const term = assign1Terms[idx].term.toLowerCase();
+            let ok = false;
+            if (term.includes("current") && (user.includes("cash") || user.includes("convert") || user.includes("year") || user.includes("inventory"))) ok = true;
+            if (term.includes("long-term") && (user.includes("debts") || user.includes("obligations") || user.includes("year") || user.includes("loan"))) ok = true;
+            if (term.includes("retained") && (user.includes("reinvest") || user.includes("kept") || user.includes("net income"))) ok = true;
+            if (term.includes("dividend") && (user.includes("shareholder") || user.includes("payment") || user.includes("profit"))) ok = true;
+            if (ok) { document.getElementById(`a1feed${idx}`).innerHTML = "✅ Correct! +10 points"; addPoints(10, `assign1 ${assign1Terms[idx].term}`); btn.disabled = true; }
+            else document.getElementById(`a1feed${idx}`).innerHTML = `❌ Try again. Hint: ${assign1Terms[idx].hint}`;
+        });
+    });
+
+    // ---------- ASSIGNMENT 2 (sentences) ----------
+    const a2words = ["wholesaler", "double-edged sword", "GPU"];
+    const a2Div = document.getElementById('assign2Area');
+    a2words.forEach((w,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<strong>${w}</strong><br><textarea id="a2inp${i}" rows="2" placeholder="Write a business sentence..."></textarea>`; a2Div.appendChild(div); });
+    document.getElementById('checkAssign2').addEventListener('click',()=>{ let pts=0; a2words.forEach((w,i)=>{ let val=document.getElementById(`a2inp${i}`).value.trim(); if(val.length>8 && val.toLowerCase().includes(w.toLowerCase())) pts+=5; }); if(pts) addPoints(pts,"assign2"); document.getElementById('assign2Feedback').innerHTML=`+${pts} points for valid sentences.`; });
+
+    // ---------- ASSIGNMENT 3 (basic tags) ----------
+    const a3sent = ["You are the new assistant, ______ ?","She hasn't replied yet, ______ ?","Let's finalize the deal, ______ ?","I am responsible, ______ ?","They can deliver on time, ______ ?"];
+    const a3corr = ["aren't you","has she","shall we","aren't I","can't they"];
+    const a3Div = document.getElementById('assign3Area');
+    a3sent.forEach((s,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<p>${s} <input id="a3inp${i}" placeholder="tag"></p>`; a3Div.appendChild(div); });
+    document.getElementById('checkAssign3').addEventListener('click',()=>{ let c=0; a3corr.forEach((cor,i)=>{ if(document.getElementById(`a3inp${i}`).value.trim().toLowerCase()===cor) c++; }); addPoints(c*5,"assign3"); document.getElementById('assign3Feedback').innerHTML=`Correct: ${c}/${a3sent.length} +${c*5} points`; });
+
+    // ---------- ASSIGNMENT 4 (word swap 10) ----------
+    const swapSentences = [
+        "The company's total _____ from sales increased by 20%.",
+        "Unsold goods that a company holds are called _____.",
+        "After paying all costs, the business reported a net _____ of €50k.",
+        "Rent and administrative salaries are typical _____ costs.",
+        "When total revenue equals total costs, the business reaches its _____ point.",
+        "Gross profit _____ is the percentage of revenue that exceeds COGS.",
+        "Raw materials and direct labour are examples of _____ costs.",
+        "If expenses exceed revenue, the company makes a _____.",
+        "Monthly internet and server fees represent a _____ cost for Eric.",
+        "The amount of money received from customers before deductions is _____."
+    ];
+    const swapBank = ["revenue","stock","profit","fixed","breakeven","margin","variable","loss","fixed","turnover"];
+    const swapCorrect = ["revenue","stock","profit","fixed","breakeven","margin","variable","loss","fixed","turnover"];
+    const a4Div = document.getElementById('assign4Swap');
+    swapSentences.forEach((s,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<span>${s}</span><select id="swapSel${i}"><option value="">--select--</option>${swapBank.map(w=>`<option value="${w}">${w}</option>`).join('')}</select>`; a4Div.appendChild(div); });
+    document.getElementById('checkAssign4').addEventListener('click',()=>{ let c=0; for(let i=0;i<swapCorrect.length;i++) if(document.getElementById(`swapSel${i}`).value===swapCorrect[i]) c++; addPoints(c*2,"assign4"); document.getElementById('assign4Feedback').innerHTML=`Correct: ${c}/10 +${c*2} points`; });
+
+    // ---------- ASSIGNMENT 5 (Eric White) ----------
+    const a5Div = document.getElementById('assign5Text');
+    a5Div.innerHTML = `<div class="card-light"><p>Eric sells personalized USB flash drives. Each drive costs €12 to make and mail (_____ costs). Fixed costs (overheads) are €500/month. If he sells 500 drives per year, his turnover is €12,000, total costs = €12,000 → he reaches the _____ point. If sales are under 500, Eric will make a _____. If sales are over 500, he will make a _____.</p>
+    <select id="ericVar"><option value="">--choose--</option><option value="variable">variable</option><option value="fixed">fixed</option></select>
+    <select id="ericBE"><option value="">--</option><option value="breakeven">breakeven</option><option value="profit">profit</option></select>
+    <select id="ericLoss"><option value="">--</option><option value="loss">loss</option><option value="profit">profit</option></select>
+    <select id="ericProfit"><option value="">--</option><option value="profit">profit</option><option value="loss">loss</option></select></div>`;
+    document.getElementById('checkAssign5').addEventListener('click',()=>{ if(document.getElementById('ericVar').value==='variable' && document.getElementById('ericBE').value==='breakeven' && document.getElementById('ericLoss').value==='loss' && document.getElementById('ericProfit').value==='profit') { addPoints(10,"assign5"); document.getElementById('assign5Feedback').innerHTML="✅ Perfect! +10 points."; } else document.getElementById('assign5Feedback').innerHTML="❌ Not correct. Expected: variable, breakeven, loss, profit."; });
+
+    // ---------- ASSIGNMENT 6 (4Ps full text) ----------
+    const full4PsText = `The most common variables used in constructing a marketing mix are ______, ______, ______ and ______. These are sometimes referred to as the four Ps. Each of these ideas can also be seen from a consumer's perspective. So, product converts into ______, price into ______, place into ______ and promotion into ______. These are the four Cs. The concept of ______ refers to how well the components of the mix are blended together. For example, a strategy of selling expensive luxury products in discount stores has poor mix coherency between product and placement. ______ refers to how the mix is adapted to a changing business environment, to changes in the organization's resources and to changes in the product life cycle.`;
+    const a6Answers = ["price","promotion","product","placement","customer solution","cost","convenience","communication","mix coherency","mix dynamics"];
+    const a6Div = document.getElementById('assign6Text');
+    a6Div.innerHTML = `<div class="card-light" style="white-space: pre-wrap;">${full4PsText.replace(/______/g,'________')}</div>`;
+    for(let i=0;i<a6Answers.length;i++){ const inp=document.createElement('input'); inp.placeholder=`Blank ${i+1}`; inp.id=`a6inp${i}`; a6Div.appendChild(inp); a6Div.appendChild(document.createElement('br')); }
+    document.getElementById('checkAssign6').addEventListener('click',()=>{ let ok=true; for(let i=0;i<a6Answers.length;i++) if(document.getElementById(`a6inp${i}`).value.trim().toLowerCase()!==a6Answers[i].toLowerCase()) ok=false; if(ok){ addPoints(20,"assign6"); document.getElementById('assign6Feedback').innerHTML="🎉 Excellent! +20 points. You mastered the marketing mix."; } else document.getElementById('assign6Feedback').innerHTML="Not all correct. Check: price, promotion, product, placement, customer solution, cost, convenience, communication, mix coherency, mix dynamics."; });
+
+    // ---------- ASSIGNMENT 7 (more tags) ----------
+    const a7sent = ["You don't like coffee, ______ ?","He will arrive tomorrow, ______ ?","Nobody called, ______ ?","Close the window, ______ ?","I'm late, ______ ?","They have never been there, ______ ?"];
+    const a7corr = ["do you","won't he","did they","will you","aren't I","have they"];
+    const a7Div = document.getElementById('assign7Area');
+    a7sent.forEach((s,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<p>${s} <input id="a7inp${i}" placeholder="tag"></p>`; a7Div.appendChild(div); });
+    document.getElementById('checkAssign7').addEventListener('click',()=>{ let c=0; a7corr.forEach((cor,i)=>{ if(document.getElementById(`a7inp${i}`).value.trim().toLowerCase()===cor) c++; }); addPoints(c*5,"assign7"); document.getElementById('assign7Feedback').innerHTML=`Correct: ${c}/${a7sent.length} +${c*5} points`; });
+
+    // ---------- ASSIGNMENT 8 (quick revision) ----------
+    const a8Div = document.getElementById('assign8Area');
+    a8Div.innerHTML = `<div class="card-light"><p>1. Change to negative question: "We should increase our marketing budget." → <input id="a8q1"></p><p>2. Add tag: "They are working hard, ______ ?" → <input id="a8q2"></p><p>3. Write one synonym for "revenue": <input id="a8q3"></p></div>`;
+    document.getElementById('checkAssign8').addEventListener('click',()=>{ addPoints(10,"assign8 bonus"); document.getElementById('assign8Feedback').innerHTML="+10 bonus points for revision effort!"; });
+
+    // ---------- ASSIGNMENT 9 (persuasion gaps) ----------
+    const persGaps = [
+        {text:"I know exactly what you ______ (m____)", correct:"mean"},
+        {text:"There's always too much to do, ______ ? (r____)", correct:"right"},
+        {text:"I'm glad you ______ that point (b____)", correct:"brought"},
+        {text:"Is the membership fee the only ______ to signing up? (o____)", correct:"obstacle"},
+        {text:"I understand how you ______ (f____)", correct:"feel"},
+        {text:"They soon ______ they were saving money (f____)", correct:"found"},
+        {text:"Does that make ______ ? (s____)", correct:"sense"},
+        {text:"Does that ______ your question? (a____)", correct:"answer"}
+    ];
+    const a9Div = document.getElementById('assign9Gaps');
+    persGaps.forEach((ph,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<p>${ph.text} <input id="a9inp${i}" placeholder="word"></p>`; a9Div.appendChild(div); });
+    document.getElementById('checkAssign9').addEventListener('click',()=>{ let c=0; persGaps.forEach((ph,i)=>{ if(document.getElementById(`a9inp${i}`).value.trim().toLowerCase()===ph.correct) c++; }); addPoints(c*2,"assign9"); document.getElementById('assign9Feedback').innerHTML=`Correct: ${c}/${persGaps.length} +${c*2} points`; });
+
+    // ========== TOPIC SECTIONS (detailed, with full vocabulary) ==========
+    // Topic Defining Terms (12 key terms)
+    const topicTermsList = [
+        {term:"Break-even point", def:"Point where total revenue equals total costs, no profit no loss"},
+        {term:"Cost of goods sold (COGS)", def:"Direct costs attributable to production of goods sold"},
+        {term:"Overheads", def:"Fixed operating expenses (rent, utilities, admin)"},
+        {term:"Gross margin", def:"(Revenue - COGS) / Revenue, expressed as percentage"},
+        {term:"Variable costs", def:"Costs that change with production volume"},
+        {term:"Fixed costs", def:"Costs that remain constant regardless of output"},
+        {term:"Revenue", def:"Total income from sales before deductions"},
+        {term:"Stock", def:"Inventory of goods held by a company"},
+        {term:"Wholesaler", def:"Business that sells goods in bulk to retailers"},
+        {term:"Bear market", def:"Market condition with falling prices and pessimism"},
+        {term:"Bull market", def:"Market condition with rising prices and optimism"},
+        {term:"Luncheon voucher", def:"Meal voucher provided as employee benefit"}
+    ];
+    const tDefDiv = document.getElementById('topicDefArea');
+    topicTermsList.forEach((item, idx) => {
+        const div = document.createElement('div'); div.className = 'card-light';
+        div.innerHTML = `<strong>${item.term}</strong><br><textarea id="topDef${idx}" rows="2" placeholder="Write definition..."></textarea><button class="topDefBtn" data-idx="${idx}">Check</button><div id="topDefFeed${idx}" class="feedback"></div>`;
+        tDefDiv.appendChild(div);
+    });
+    document.querySelectorAll('.topDefBtn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = parseInt(btn.getAttribute('data-idx'));
+            const user = document.getElementById(`topDef${idx}`).value.toLowerCase();
+            const def = topicTermsList[idx].def.toLowerCase();
+            if(user.length > 5 && (def.includes(user.substring(0,15)) || user.includes(topicTermsList[idx].term.toLowerCase().substring(0,8)))) {
+                addPoints(8, `topic def ${topicTermsList[idx].term}`);
+                document.getElementById(`topDefFeed${idx}`).innerHTML = "✅ Correct +8";
+                btn.disabled = true;
+            } else {
+                document.getElementById(`topDefFeed${idx}`).innerHTML = `❌ Hint: ${topicTermsList[idx].def.substring(0,60)}...`;
+            }
+        });
+    });
+
+    // Topic Structuring sentence (5 words)
+    const topicStructWords = ["revenue","margin","stock","overheads","wholesaler"];
+    const tStructDiv = document.getElementById('topicStructArea');
+    topicStructWords.forEach((w,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<strong>${w}</strong><br><textarea id="topStruct${i}" rows="2" placeholder="Business sentence..."></textarea>`; tStructDiv.appendChild(div); });
+    document.getElementById('checkTopicStruct').addEventListener('click',()=>{ let pts=0; topicStructWords.forEach((w,i)=>{ let val=document.getElementById(`topStruct${i}`).value.trim(); if(val.length>7 && val.toLowerCase().includes(w)) pts+=5; }); if(pts) addPoints(pts,"topic struct"); document.getElementById('topicStructFeedback').innerHTML=`+${pts} points`; });
+
+    // Topic Interrogative (negative questions)
+    const intStatements = ["You think this strategy is effective.","We need to reduce operating costs.","She can finish the audit by Friday.","They have allocated enough budget."];
+    const intDiv = document.getElementById('topicInterrogArea');
+    intStatements.forEach((s,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<p>${s}</p><input id="intInp${i}" placeholder="Negative question...">`; intDiv.appendChild(div); });
+    document.getElementById('checkTopicInterrog').addEventListener('click',()=>{ addPoints(10,"topic interrog"); document.getElementById('topicInterrogFeedback').innerHTML="Great practice! Compare: Don't you think...? Don't we need...? Can't she...? Haven't they...?"; });
+
+    // Topic Vocabulary Bank (matching 15 terms)
+    const vocabPairs = [
+        {term:"Fixed cost", def:"Cost that does not change with output"},
+        {term:"Variable cost", def:"Cost that varies with production volume"},
+        {term:"Breakeven", def:"Point where total revenue = total costs"},
+        {term:"Margin", def:"Difference between selling price and cost"},
+        {term:"Revenue", def:"Total income from sales"},
+        {term:"Overheads", def:"Ongoing operating expenses"},
+        {term:"Stock", def:"Inventory of goods"},
+        {term:"COGS", def:"Direct costs of production"},
+        {term:"Wholesaler", def:"Sells goods in bulk to retailers"},
+        {term:"Double-edged sword", def:"Situation with both positive and negative effects"},
+        {term:"Bull market", def:"Rising stock market, optimism"},
+        {term:"Bear market", def:"Falling stock market, pessimism"},
+        {term:"Dividends", def:"Payments to shareholders"},
+        {term:"Retained profit", def:"Profit reinvested in business"},
+        {term:"Lobby", def:"Influence decisions of government or authorities"}
+    ];
+    const tVocabDiv = document.getElementById('topicVocabArea');
+    vocabPairs.forEach((item,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<strong>${item.term}</strong><select id="vocMatch${i}"><option value="">--select definition--</option>${vocabPairs.map((d,di)=>`<option value="${di}">${d.def}</option>`).join('')}</select><div id="vocFeed${i}" class="feedback"></div>`; tVocabDiv.appendChild(div); });
+    document.getElementById('checkTopicVocab').addEventListener('click',()=>{ let c=0; vocabPairs.forEach((_,i)=>{ if(document.getElementById(`vocMatch${i}`).value==i) c++; }); addPoints(c*2,"topic vocab"); document.getElementById('topicVocabFeedback').innerHTML=`Matched ${c}/${vocabPairs.length} correctly. +${c*2} points`; });
+
+    // Topic Tag questions (12 sentences)
+    const topicTags = [
+        {text:"You are the CEO, ______ ?", correct:"aren't you"},
+        {text:"They haven't delivered, ______ ?", correct:"have they"},
+        {text:"Let's sign the agreement, ______ ?", correct:"shall we"},
+        {text:"She could help us, ______ ?", correct:"couldn't she"},
+        {text:"It isn't a problem, ______ ?", correct:"is it"},
+        {text:"Everyone agreed, ______ ?", correct:"didn't they"},
+        {text:"Don't be late, ______ ?", correct:"will you"},
+        {text:"I'm supposed to report, ______ ?", correct:"aren't I"},
+        {text:"There's no risk, ______ ?", correct:"is there"},
+        {text:"They rarely complain, ______ ?", correct:"do they"},
+        {text:"Let's not panic, ______ ?", correct:"shall we"},
+        {text:"You'd like some coffee, ______ ?", correct:"wouldn't you"}
+    ];
+    const tTagDiv = document.getElementById('topicTagArea');
+    topicTags.forEach((item,i)=>{ const div=document.createElement('div'); div.className='card-light'; div.innerHTML=`<p>${item.text} <input id="topicTag${i}" placeholder="tag"></p>`; tTagDiv.appendChild(div); });
+    document.getElementById('checkTopicTag').addEventListener('click',()=>{ let c=0; topicTags.forEach((item,i)=>{ if(document.getElementById(`topicTag${i}`).value.trim().toLowerCase()===item.correct) c++; }); addPoints(c*3,"topic tags"); document.getElementById('topicTagFeedback').innerHTML=`Correct: ${c}/${topicTags.length} +${c*3} points`; });
+
+    // Topic Patterns of persuasion (Feel, Felt, Found + redirect)
+    const persTopicDiv = document.getElementById('topicPersuasionArea');
+    persTopicDiv.innerHTML = `<div class="card-light"><p><strong>Complete the phrases:</strong></p>
+    <p>1. I understand how you ______ (f____). <input id="persF1" placeholder="word"></p>
+    <p>2. Many customers felt the same way, but they soon ______ (f____) that our solution saved them money. <input id="persF2" placeholder="word"></p>
+    <p>3. Redirect objection: "Your price is too high" → "You're probably wondering what's different about our service, ______ ?" <input id="persRedir" placeholder="tag"></p>
+    <p>4. "I'll think about it" → "If I can answer all your questions, ______ you ready to move forward?" <input id="persRedir2" placeholder="word"></p></div>`;
+    document.getElementById('checkTopicPersuasion').addEventListener('click',()=>{
+        let pts=0;
+        if(document.getElementById('persF1').value.trim().toLowerCase()==='feel') pts+=5;
+        if(document.getElementById('persF2').value.trim().toLowerCase()==='found') pts+=5;
+        if(document.getElementById('persRedir').value.trim().toLowerCase()==='aren\'t you' || document.getElementById('persRedir').value.trim().toLowerCase()==="aren't you") pts+=5;
+        if(document.getElementById('persRedir2').value.trim().toLowerCase()==='are') pts+=5;
+        if(pts) addPoints(pts,"topic persuasion");
+        document.getElementById('topicPersuasionFeedback').innerHTML=`+${pts} points for persuasion mastery!`;
+    });
+
+    // Topic Bargaining (scenarios)
+    const bargainDiv = document.getElementById('topicBargainArea');
+    bargainDiv.innerHTML = `<div class="card-light"><p><strong>Scenario 1:</strong> Customer says: "Your price is 20% higher than your competitor."</p>
+    <select id="bargain1"><option value="">--choose response--</option><option value="correct">I understand how you feel. Many clients felt the same, but they found our reliability saves them money in the long run.</option><option value="wrong">Then go to competitor.</option></select>
+    <p><strong>Scenario 2:</strong> "We don't have the budget right now."</p>
+    <select id="bargain2"><option value="">--choose--</option><option value="correct">If I can show you how this investment pays for itself within 3 months, would you be willing to discuss further?</option><option value="wrong">Too bad, bye.</option></select>
+    <p><strong>Scenario 3:</strong> "I'll think about it and call you back."</p>
+    <select id="bargain3"><option value="">--choose--</option><option value="correct">Of course, it's an important decision. If I can answer any remaining questions, could we finalize the details today?</option><option value="wrong">Okay, goodbye.</option></select>
+    <button id="checkBargainTopic">Check bargaining</button><div id="bargainTopicFeedback" class="feedback"></div></div>`;
+    document.getElementById('checkBargainTopic').addEventListener('click',()=>{
+        let s=0;
+        if(document.getElementById('bargain1').value==='correct') s++;
+        if(document.getElementById('bargain2').value==='correct') s++;
+        if(document.getElementById('bargain3').value==='correct') s++;
+        if(s) addPoints(s*8,"bargaining");
+        document.getElementById('bargainTopicFeedback').innerHTML=`You chose ${s}/3 correct persuasion tactics. +${s*8} points.`;
+    });
+</script>
+</body>
+</html>
